@@ -11,6 +11,7 @@
         params.domain = document.domain || '';
         params.url = document.URL || '';
         params.title = document.title || '';
+        params.ua = navigator.userAgent || '';
         params.referrer = document.referrer || '';
     }
     //Window对象数据
@@ -56,7 +57,7 @@
             hasClass: function (sClass,oEle) {
                 var reg = new RegExp('\\b' + sClass + '\\b', 'i');
 
-                if (reg.test(sClass.className)) {
+                if (reg.test(oEle.className)) {
                     return true;
                 }
                 return false;
@@ -132,7 +133,7 @@
         },
 
         removeCookie: function(name, path, domain, secure) {
-            this.setCookie(name, "", {type: 'minute', value: 0}, path, domain, secure);
+            this.setCookie(name, '', {type: 'minute', value: 0}, path, domain, secure);
         },
 
         guid: function() {
@@ -154,13 +155,14 @@
                 var ev = ev || window.event,
                     target = ev.srcElement || ev.target;
 
-                if (_this.dom.hasClass('OP_LOG_BTN')) {
-                    //_this.sendLog('')
+                if (_this.dom.hasClass('OP_LOG_BTN', target)) {
+                    _this.sendLog('click', {'tag': eval('(' + target.getAttribute('data-click') + ')').tag});
                 }
             });
         },
 
-        analysis_set: function(paramsObj) {
+        put_img: function(paramsObj) {
+            paramsObj = paramsObj || {};
             var args = '';
 
             for(var i in paramsObj) {
@@ -179,19 +181,26 @@
 
             //Image send
             var img = new Image(1, 1);
-            //var args_str = 'uuid=c133bf68-852f-4a50-ad55-01cedc85618c&sid=c133bf68-852f-4a50-ad55-01cedc85618c|2&visiting=3&step=5&ua=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
 
             img.src = 'http://fvp.58.com/1.gif?' + args;
         },
 
-        sendLog: function (type) {
+        sendLog: function (type, param) {
             var _this = this,
                 type = type || 'view';
 
             if (type == 'time') {
                 load_time.end = new Date().getTime();
                 var difference = load_time.end - load_time.start;
-                console.log(difference);
+                _this.put_img({
+                    'timer': difference,
+                    'uuid': _util.getCookie('UUID') || '',
+                });
+            } else if (type == 'click') {
+                _this.put_img({
+                    'tag': param.tag,
+                    'uuid': _util.getCookie('UUID') || '',
+                });
             } else {
                 //没有UUID-新用户
                 if (!_util.getCookie('UUID')) {
@@ -246,8 +255,8 @@
                     }
                 }
 
-                _this.analysis_set({
-                    'uuid': '133bf68-852f-4a50-ad55-01cedc85618c',
+                _this.put_img({
+                    'uuid': _util.getCookie('UUID') || '',
                     'sid': '133bf68-852f-4a50-ad55-01cedc85618c' + '|',
                     'visiting': '3',
                     'step': '5'
