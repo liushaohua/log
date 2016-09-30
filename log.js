@@ -6,6 +6,35 @@
             start: new Date().getTime()
         };
 
+    //Document对象数据
+    if(document) {
+        params.domain = document.domain || '';
+        params.url = document.URL || '';
+        params.title = document.title || '';
+        params.referrer = document.referrer || '';
+    }
+    //Window对象数据
+    if(window && window.screen) {
+        params.sh = window.screen.height || 0;
+        params.sw = window.screen.width || 0;
+    }
+    //navigator对象数据
+    if(navigator) {
+        params.lang = navigator.language || '';
+    }
+
+    //解析_maq配置
+    if(_maq) {
+        for(var i in _maq) {
+            switch(_maq[i][0]) {
+                case '_setAccount':
+                    params.account = _maq[i][1];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     var _util = {
 
@@ -131,6 +160,30 @@
             });
         },
 
+        analysis_set: function(paramsObj) {
+            var args = '';
+
+            for(var i in paramsObj) {
+                if(args != '') {
+                    args += '&';
+                }
+                args += i + '=' + encodeURIComponent(paramsObj[i]);
+            }
+
+            for(var i in params) {
+                if(args != '') {
+                    args += '&';
+                }
+                args += i + '=' + encodeURIComponent(params[i]);
+            }
+
+            //Image send
+            var img = new Image(1, 1);
+            //var args_str = 'uuid=c133bf68-852f-4a50-ad55-01cedc85618c&sid=c133bf68-852f-4a50-ad55-01cedc85618c|2&visiting=3&step=5&ua=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
+
+            img.src = 'http://fvp.58.com/1.gif?' + args;
+        },
+
         sendLog: function (type) {
             var _this = this,
                 type = type || 'view';
@@ -192,53 +245,17 @@
                         });
                     }
                 }
+
+                _this.analysis_set({
+                    'uuid': '133bf68-852f-4a50-ad55-01cedc85618c',
+                    'sid': '133bf68-852f-4a50-ad55-01cedc85618c' + '|',
+                    'visiting': '3',
+                    'step': '5'
+                });
             }
+
         }
     };
-
-
-
-    //Document对象数据
-    if(document) {
-        params.domain = document.domain || '';
-        params.url = document.URL || '';
-        params.title = document.title || '';
-        params.referrer = document.referrer || '';
-    }
-    //Window对象数据
-    if(window && window.screen) {
-        params.sh = window.screen.height || 0;
-        params.sw = window.screen.width || 0;
-    }
-    //navigator对象数据
-    if(navigator) {
-        params.lang = navigator.language || '';
-    }
-    //解析_maq配置
-    if(_maq) {
-        for(var i in _maq) {
-            switch(_maq[i][0]) {
-                case '_setAccount':
-                    params.account = _maq[i][1];
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    for(var i in params) {
-        if(args != '') {
-            args += '&';
-        }
-        args += i + '=' + encodeURIComponent(params[i]);
-    }
-
-    //通过Image对象请求后端脚本
-    var img = new Image(1, 1);
-    var args_str = 'uuid=c133bf68-852f-4a50-ad55-01cedc85618c&sid=c133bf68-852f-4a50-ad55-01cedc85618c|2&visiting=3&ua=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
-
-    img.src = 'http://fvp.58.com/1.gif?' + args_str + '&' + args;
 
     /**
      *  pageInit
