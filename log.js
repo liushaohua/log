@@ -285,8 +285,8 @@
                     if(!_util.getCookie('STEP')) {
                         //设置SETP 30分钟 ++
                         _util.setCookie('UUID', _util.getCookie('UUID').split('.')[0] + '.' +(+_util.getCookie('UUID').split('.')[1] + 1), {
-                            type: 'minute',
-                            value: 30
+                            type: 'day',
+                            value: 180
                         });
 
                         //not have SETP
