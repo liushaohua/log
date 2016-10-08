@@ -240,8 +240,8 @@
                 type = type || 'view';
             //手动触发
             } else if (typeof arguments[0] == 'object') {
-                _this.put_img(eval('(' + arguments[0].getAttribute('dc') + ')'));
-                return false;
+                _util.put_img(eval('(' + arguments[0].getAttribute('dc') + ')'));
+                return;
             }
 
             if (type == 'time') {
