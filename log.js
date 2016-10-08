@@ -183,9 +183,11 @@
                 if (target.getAttribute('dc')) {
                     _this.sendLog('click', eval('(' + target.getAttribute('dc') + ')'));
                 }
-
-                window.__MisLog = _this.sendLog;
             });
+
+            setTimeout(function () {
+                window.__MisLog = _this.sendLog;
+            },50);
         },
 
         /**
@@ -226,25 +228,30 @@
         sendLog: function (type, param) {
             var _this = this;
 
-            if (arguments.length == 0) {
-                type = type || 'view';
-            } else if (arguments.length == 1 && !type) {
-                param.uuid= _util.getCookie('UUID') || '';
-                _this.put_img(param);
+            param = param || {};
+
+            //have uuid && set param
+            if (_util.getCookie('UUID')) {
+                param.uuid =  _util.getCookie('UUID').split('.')[0];
             }
 
-            param = param || {};
+            //view
+            if (arguments.length == 0) {
+                type = type || 'view';
+            //手动触发
+            } else if (typeof arguments[0] == 'object') {
+                _this.put_img(eval('(' + arguments[0].getAttribute('dc') + ')'));
+                return false;
+            }
 
             if (type == 'time') {
                 load_time.end = new Date().getTime();
                 var difference = load_time.end - load_time.start;
 
                 param.timer = difference;
-                param.uuid= _util.getCookie('UUID') || '';
 
                 _this.put_img(param);
             } else if (type == 'click') {
-                param.uuid= _util.getCookie('UUID') || '';
                 _this.put_img(param);
             } else {
                 //没有UUID-新用户
