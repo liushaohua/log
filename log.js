@@ -25,7 +25,7 @@
     }
 
     //解析_maq配置
-    if(_maq) {
+    if(window._maq) {
         for(var i in _maq) {
             switch(_maq[i][0]) {
                 case '_setAccount':
@@ -180,9 +180,11 @@
                 var ev = ev || window.event,
                     target = ev.srcElement || ev.target;
 
-                if (_this.dom.hasClass('OP_LOG_BTN', target)) {
-                    _this.sendLog('click', {'tag': eval('(' + target.getAttribute('data-click') + ')').tag});
+                if (target.getAttribute('dc')) {
+                    _this.sendLog('click', eval('(' + target.getAttribute('dc') + ')'));
                 }
+
+                window.__MisLog = _this.sendLog;
             });
         },
 
@@ -222,26 +224,33 @@
          * @return {}       [description]
          */
         sendLog: function (type, param) {
-            var _this = this,
+            var _this = this;
+
+            if (arguments.length == 0) {
                 type = type || 'view';
+            } else if (arguments.length == 1 && !type) {
+                param.uuid= _util.getCookie('UUID') || '';
+                _this.put_img(param);
+            }
+
+            param = param || {};
 
             if (type == 'time') {
                 load_time.end = new Date().getTime();
                 var difference = load_time.end - load_time.start;
-                _this.put_img({
-                    'timer': difference,
-                    'uuid': _util.getCookie('UUID') || ''
-                });
+
+                param.timer = difference;
+                param.uuid= _util.getCookie('UUID') || '';
+
+                _this.put_img(param);
             } else if (type == 'click') {
-                _this.put_img({
-                    'tag': param.tag,
-                    'uuid': _util.getCookie('UUID') || ''
-                });
+                param.uuid= _util.getCookie('UUID') || '';
+                _this.put_img(param);
             } else {
                 //没有UUID-新用户
                 if (!_util.getCookie('UUID')) {
 
-                    var _uuid = _this.guid();
+                    var _uuid = _this.guid() + '.1';
 
                     //设置UUID
                     _util.setCookie('UUID', _uuid, {
@@ -251,8 +260,8 @@
 
                     //设置VISITING
                     _util.setCookie('VISITING', 1, {
-                        type: 'minute',
-                        value: 30
+                        type: 'day',
+                        value: 180
                     });
 
                     //设置STEP
@@ -268,20 +277,18 @@
 
                     //设置VISITING ++
                     _util.setCookie('VISITING', +_util.getCookie('VISITING') + 1, {
-                        type: 'minute',
+                        type: 'day',
                         value: 180
                     });
 
-                    //have SETP步长
-                    if(_util.getCookie('STEP')) {
-
+                    //don't have SETP步长
+                    if(!_util.getCookie('STEP')) {
                         //设置SETP 30分钟 ++
-                        _util.setCookie('STEP', +_util.getCookie('STEP') + 1, {
+                        _util.setCookie('UUID', _util.getCookie('UUID').split('.')[0] + '.' +(+_util.getCookie('UUID').split('.')[1] + 1), {
                             type: 'minute',
                             value: 30
                         });
 
-                    } else {
                         //not have SETP
                         //设置STEP 1
                         _util.setCookie('STEP', 1, {
@@ -292,10 +299,10 @@
                 }
 
                 _this.put_img({
-                    'uuid': _util.getCookie('UUID') || '',
-                    'sid': _util.getCookie('UUID') + '|' + _util.getCookie('STEP'),
+                    'uuid': _util.getCookie('UUID').split('.')[0],
+                    'sid': _util.getCookie('UUID').split('.').join('|'),
                     'visiting': _util.getCookie('VISITING'),
-                    'step': _util.getCookie('STEP')
+                    'step': +_util.getCookie('UUID').split('.')[1]
                 });
             }
 

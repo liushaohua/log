@@ -3,15 +3,22 @@
     <head>
         <meta charset="utf-8">
         <title>test_log</title>
-        <script>
-        var _maq = _maq || [];
-        _maq.push(['_setAccount', '网站标识']);
-        </script>
         <script src="./log.js"></script>
     </head>
     <body>
         ceshi
-        <span class="OP_LOG_BTN blue_btn" data-click="{fm:'beha',tag:'lala'}">啦啦</span>
-        <span class="OP_LOG_BTN" data-click="{fm:'beha',tag:'haha'}">哈哈</span>
+        <span class="blue_btn" dc="{fm:'beha',tag:'lala','key1':'key1'}">啦啦-按钮</span>
+        <span dc="{tag:'haha',fm:'beha'}">哈哈-按钮</span>
+        <span dc="{tag:'shoudong',fm:'beha'}" id="clickDom">我会阻止冒泡-按钮</span>
+        </br>
+        <a href="test2.html" target="_blank" dc="{tag:'st',fm:'href'}">test2-新开</a>
+        <a href="test2.html" dc="{tag:'uw',fm:'href'}">test3</a>
     </body>
+    <script>
+        document.getElementById('clickDom').onclick = function (ev) {
+            alert(3);
+            window.__MisLog(this);
+            ev.stopPropagation();
+        }
+    </script>
 </html>
