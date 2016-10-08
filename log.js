@@ -8,10 +8,10 @@
 
     //Document对象数据
     if(document) {
-        params.domain = document.domain || '';
+        //params.domain = document.domain || '';
         params.url = document.URL || '';
-        params.title = document.title || '';
-        params.ua = navigator.userAgent || '';
+        //params.title = document.title || '';
+        //params.ua = navigator.userAgent || '';
         params.referrer = document.referrer || '';
     }
     //Window对象数据
@@ -21,7 +21,7 @@
     }
     //navigator对象数据
     if(navigator) {
-        params.lang = navigator.language || '';
+        //params.lang = navigator.language || '';
     }
 
     //解析_maq配置
@@ -38,12 +38,15 @@
     }
 
     var _util = {
-
         dom: {
+            /**
+             * [$ 通过class获取dom]
+             * @param  {[string]} sClass  [class名称]
+             * @param  {[dom]} oParent [父dom]
+             * @return {[array]}         [dom数组]
+             */
             $: function (sClass, oParent) {
-
                 oParent = oParent || document;
-
                 var aResult = [];
             	var aEle = oParent.getElementsByTagName('*');
                 var reg = new RegExp('\\b' + sClass + '\\b', 'i');
@@ -54,6 +57,12 @@
 
             	return aResult;
             },
+            /**
+             * [hasClass 是否包含class]
+             * @param  {[string]}  sClass [className]
+             * @param  {[dom]}  oEle   [dom元素]
+             * @return {Boolean}        [yes/true]
+             */
             hasClass: function (sClass,oEle) {
                 var reg = new RegExp('\\b' + sClass + '\\b', 'i');
 
@@ -132,10 +141,22 @@
              return this;
         },
 
+        /**
+         * [removeCookie remove Cookie]
+         * @param  {[string]} name   [name]
+         * @param  {[string]} path   [path]
+         * @param  {[string]} domain [domain]
+         * @param  {[string]} secure [secure]
+         * @return {}        [description]
+         */
         removeCookie: function(name, path, domain, secure) {
             this.setCookie(name, '', {type: 'minute', value: 0}, path, domain, secure);
         },
 
+        /**
+         * [guid get uuid]
+         * @return {[string]} [uuid]
+         */
         guid: function() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -148,6 +169,10 @@
             window.__session =  _util.getCookie('UUID') + '|' + _util.getCookie('VISITING');
         },
 
+        /**
+         * [logBtnFn 埋点btn触发方法]
+         * @return {[null]} [description]
+         */
         logBtnFn: function() {
             var _this = this;
 
@@ -161,6 +186,11 @@
             });
         },
 
+        /**
+         * [put_img 发送img]
+         * @param  {[boject]} paramsObj [参数对象]
+         * @return {}           [description]
+         */
         put_img: function(paramsObj) {
             paramsObj = paramsObj || {};
             var args = '';
@@ -185,6 +215,12 @@
             img.src = 'http://fvp.58.com/1.gif?' + args;
         },
 
+        /**
+         * [sendLog send log]
+         * @param  {[string]} type  [view time]
+         * @param  {[object]} param [param obj]
+         * @return {}       [description]
+         */
         sendLog: function (type, param) {
             var _this = this,
                 type = type || 'view';
@@ -194,12 +230,12 @@
                 var difference = load_time.end - load_time.start;
                 _this.put_img({
                     'timer': difference,
-                    'uuid': _util.getCookie('UUID') || '',
+                    'uuid': _util.getCookie('UUID') || ''
                 });
             } else if (type == 'click') {
                 _this.put_img({
                     'tag': param.tag,
-                    'uuid': _util.getCookie('UUID') || '',
+                    'uuid': _util.getCookie('UUID') || ''
                 });
             } else {
                 //没有UUID-新用户
@@ -245,7 +281,7 @@
                             value: 30
                         });
 
-                    } else {console.log('meiyou');
+                    } else {
                         //not have SETP
                         //设置STEP 1
                         _util.setCookie('STEP', 1, {
@@ -257,9 +293,9 @@
 
                 _this.put_img({
                     'uuid': _util.getCookie('UUID') || '',
-                    'sid': '133bf68-852f-4a50-ad55-01cedc85618c' + '|' + _util.getCookie('STEP'),
-                    'visiting': '3',
-                    'step': '5'
+                    'sid': _util.getCookie('UUID') + '|' + _util.getCookie('STEP'),
+                    'visiting': _util.getCookie('VISITING'),
+                    'step': _util.getCookie('STEP')
                 });
             }
 
