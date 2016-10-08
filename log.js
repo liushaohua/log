@@ -107,16 +107,16 @@
         //minute
         setCookie: function(name, value, expires, path, domain, secure) {
              var cookieText = encodeURIComponent(name) + "=" + encodeURIComponent(value),
-                 timer = 0;
+                 exp = new Date();
 
              if (expires.type == 'day') {
-                 timer = expires.value * 86400000;
+                 exp.setTime(exp.getTime() + expires.value * 86400000);
              } else {
-                 timer = expires.value * 60 * 1000;
+                 exp.setTime(exp.getTime() + expires.value * 60 * 1000);
              }
 
-             if (expires instanceof Date) {
-                 cookieText += "; expires=" + expires.toGMTString();
+             if (exp instanceof Date) {
+                 cookieText += "; expires=" + exp.toGMTString();
              }
 
              if (path) {
@@ -239,13 +239,13 @@
                     //have SETP步长
                     if(_util.getCookie('STEP')) {
 
-                        //设置SETP ++
+                        //设置SETP 30分钟 ++
                         _util.setCookie('STEP', +_util.getCookie('STEP') + 1, {
                             type: 'minute',
                             value: 30
                         });
 
-                    } else {
+                    } else {console.log('meiyou');
                         //not have SETP
                         //设置STEP 1
                         _util.setCookie('STEP', 1, {
@@ -257,7 +257,7 @@
 
                 _this.put_img({
                     'uuid': _util.getCookie('UUID') || '',
-                    'sid': '133bf68-852f-4a50-ad55-01cedc85618c' + '|',
+                    'sid': '133bf68-852f-4a50-ad55-01cedc85618c' + '|' + _util.getCookie('STEP'),
                     'visiting': '3',
                     'step': '5'
                 });
