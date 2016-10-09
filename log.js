@@ -195,7 +195,7 @@
          * @param  {[boject]} paramsObj [参数对象]
          * @return {}           [description]
          */
-        put_img: function(paramsObj) {
+        put_img: function(paramsObj, b) {
             paramsObj = paramsObj || {};
             var args = '';
 
@@ -206,12 +206,18 @@
                 args += i + '=' + encodeURIComponent(paramsObj[i]);
             }
 
+            if (!b) {
+                delete params.sh;
+                delete params.sw;
+            }
+
             for(var i in params) {
                 if(args != '') {
                     args += '&';
                 }
                 args += i + '=' + encodeURIComponent(params[i]);
             }
+
 
             //Image send
             var img = new Image(1, 1);
@@ -310,7 +316,7 @@
                     'sid': _util.getCookie('UUID').split('.').join('|'),
                     'visiting': _util.getCookie('VISITING'),
                     'step': +_util.getCookie('UUID').split('.')[1]
-                });
+                },1);
             }
 
         }
