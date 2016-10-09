@@ -3,16 +3,20 @@
     var params = {},
         args = '',
         load_time = {
+            date: new Date(),
             start: new Date().getTime()
         };
 
     //Document对象数据
     if(document) {
-        //params.domain = document.domain || '';
+        params.domain = document.domain || '';
         params.url = document.URL || '';
         //params.title = document.title || '';
         //params.ua = navigator.userAgent || '';
-        params.referrer = document.referrer || '';
+        var ref = (document.referrer || '').split('/'),
+            ref_arr = [],
+            rd = ref_arr.concat(ref[0],ref[1],ref[2]).join('/');
+        params.rd = rd == '//' ? '': rd;
     }
     //Window对象数据
     if(window && window.screen) {
@@ -38,6 +42,7 @@
     }
 
     var _util = {
+        isNew: 0,
         dom: {
             /**
              * [$ 通过class获取dom]
@@ -195,8 +200,10 @@
          * @param  {[boject]} paramsObj [参数对象]
          * @return {}           [description]
          */
-        put_img: function(paramsObj, b) {
+        put_img: function(paramsObj) {
             paramsObj = paramsObj || {};
+            paramsObj.pid = _util.pid;
+
             var args = '';
 
             for(var i in paramsObj) {
@@ -206,9 +213,11 @@
                 args += i + '=' + encodeURIComponent(paramsObj[i]);
             }
 
-            if (!b) {
+            if (!_util.isLoad) {
                 delete params.sh;
                 delete params.sw;
+                delete params.domain;
+                delete params.rd;
             }
 
             for(var i in params) {
@@ -254,7 +263,12 @@
                 load_time.end = new Date().getTime();
                 var difference = load_time.end - load_time.start;
 
-                param.timer = difference;
+                param.lt = difference;
+
+                _this.put_img(param);
+            } else if (type == 'unload') {
+                param.st = load_time.date;
+                param.et = new Date();
 
                 _this.put_img(param);
             } else if (type == 'click') {
@@ -264,6 +278,9 @@
                 if (!_util.getCookie('UUID')) {
 
                     var _uuid = _this.guid() + '.1';
+
+                    //是新用户
+                    _util.isNew = 1;
 
                     //设置UUID
                     _util.setCookie('UUID', _uuid, {
@@ -288,12 +305,6 @@
                 } else {
                     // have UUID-老用户-180天有效
 
-                    //设置VISITING ++
-                    _util.setCookie('VISITING', +_util.getCookie('VISITING') + 1, {
-                        type: 'day',
-                        value: 180
-                    });
-
                     //don't have SETP步长
                     if(!_util.getCookie('STEP')) {
                         //设置SETP 30分钟 ++
@@ -308,14 +319,24 @@
                             type: 'minute',
                             value: 30
                         });
+                    } else {
+                        //have SETP
+
+                        _util.setCookie('STEP', +_util.getCookie('STEP') + 1, {
+                            type: 'minute',
+                            value: 30
+                        });
                     }
                 }
+
+                _util.pid = _util.getCookie('UUID').split('.')[0] + new Date().getTime();
 
                 _this.put_img({
                     'uuid': _util.getCookie('UUID').split('.')[0],
                     'sid': _util.getCookie('UUID').split('.').join('|'),
-                    'visiting': _util.getCookie('VISITING'),
-                    'step': +_util.getCookie('UUID').split('.')[1]
+                    'v': +_util.getCookie('UUID').split('.')[1],
+                    's': _util.getCookie('STEP'),
+                    'nu': _util.isNew
                 },1);
             }
 
@@ -338,4 +359,13 @@
         //bind logBtn Fn
         _util.logBtnFn();
     });
+
+    /**
+     * page unLoad后send日志
+     */
+
+    window.onbeforeunload = function () {
+        _util.sendLog('unload');
+        return;
+    }
 })();
