@@ -16,7 +16,7 @@
         var ref = (document.referrer || '').split('/'),
             ref_arr = [],
             rd = ref_arr.concat(ref[0],ref[1],ref[2]).join('/');
-        params.rd = rd == '//' ? '': rd;
+        params.rd = (rd == '//' ? '': rd);
     }
     //Window对象数据
     if(window && window.screen) {
@@ -203,6 +203,7 @@
         put_img: function(paramsObj) {
             paramsObj = paramsObj || {};
             paramsObj.pid = _util.pid;
+            //paramsObj.domain = _util.pid;
 
             var args = '';
 
@@ -213,11 +214,13 @@
                 args += i + '=' + encodeURIComponent(paramsObj[i]);
             }
 
-            if (!_util.isLoad) {
+            if (_util.isLoad) {
                 delete params.sh;
                 delete params.sw;
                 delete params.domain;
                 delete params.rd;
+
+                _util.isLoad = 0;
             }
 
             for(var i in params) {
@@ -226,6 +229,8 @@
                 }
                 args += i + '=' + encodeURIComponent(params[i]);
             }
+
+            _util.isLoad = 1;
 
 
             //Image send
