@@ -175,8 +175,27 @@
         },
 
         /**
+         * [logInputFn input埋点触发方法]
+         * @return {[type]} [description]
+         */
+        logInputFn: function() {
+            var aInput = document.getElementsByTagName('input'),
+                _this = this;
+            for (var i = 0, l = aInput.length; i < l; i++) {
+                var oInput = aInput[i];
+                if (oInput.getAttribute('dc')) {
+                    oInput.onblur = function () {
+                        var dc = eval('(' + this.getAttribute('dc') + ')');
+                        dc.value = this.value;
+                        _this.sendLog('blur', dc);
+                    }
+                }
+            }
+        },
+
+        /**
          * [logBtnFn 埋点btn触发方法]
-         * @return {[null]} [description]
+         * @return {} []
          */
         logBtnFn: function() {
             var _this = this;
@@ -236,7 +255,7 @@
             //Image send
             var img = new Image(1, 1);
 
-            img.src = 'http://fvp.58.com/1.gif?' + args;
+            img.src = 'http://10.48.192.59/1.gif?' + args;
         },
 
         /**
@@ -246,10 +265,18 @@
          * @return {}       [description]
          */
         sendLog: function (type, param) {
-            var _this = this;
+            var _this = this,
+                hashFn = {
+                    'time': function () {},
+                    'undefined': function () {},
+                    'unload': function () {},
+                    'click': function () {},
+                    'blur': function () {}
+                };
+
 
             param = param || {};
-
+               console.log('hash',hashFn[type],type);
             //have uuid && set param
             if (_util.getCookie('UUID')) {
                 param.uuid =  _util.getCookie('UUID').split('.')[0];
@@ -276,7 +303,7 @@
                 param.et = new Date();
 
                 _this.put_img(param);
-            } else if (type == 'click') {
+            } else if (type == 'click' || type == 'blur') {
                 _this.put_img(param);
             } else {
                 //没有UUID-新用户
@@ -363,6 +390,9 @@
 
         //bind logBtn Fn
         _util.logBtnFn();
+
+        //bind logInput fn
+        _util.logInputFn();
     });
 
     /**
