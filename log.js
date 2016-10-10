@@ -265,18 +265,9 @@
          * @return {}       [description]
          */
         sendLog: function (type, param) {
-            var _this = this,
-                hashFn = {
-                    'time': function () {},
-                    'undefined': function () {},
-                    'unload': function () {},
-                    'click': function () {},
-                    'blur': function () {}
-                };
-
+            var _this = this;
 
             param = param || {};
-               console.log('hash',hashFn[type],type);
             //have uuid && set param
             if (_util.getCookie('UUID')) {
                 param.uuid =  _util.getCookie('UUID').split('.')[0];
