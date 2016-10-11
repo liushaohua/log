@@ -41,6 +41,10 @@
         }
     }
 
+    /**
+     * [_util 通用方法]
+     * @type {Object}
+     */
     var _util = {
         isNew: 0,
         dom: {
@@ -118,7 +122,16 @@
              return cookieValue;
         },
 
-        //minute
+        /**
+         * [setCookie 设置cookie]
+         * @param {[strin]} name    [名称]
+         * @param {[number]} value   [值]
+         * @param {[{}]} expires [过期时间obj]
+         * @param {[string]} path    [路径]
+         * @param {[string]} domain  [主域]
+         * @param {[string]} secure  [secure]
+         * @return {[obj]}      [_util]
+         */
         setCookie: function(name, value, expires, path, domain, secure) {
              var cookieText = encodeURIComponent(name) + "=" + encodeURIComponent(value),
                  exp = new Date();
@@ -171,7 +184,7 @@
 
         //设置session
         setConsole: function () {
-            window.__session =  _util.getCookie('UUID') + '|' + _util.getCookie('VISITING');
+            window.__session =  _util.getCookie('UUID').split('.').join('|');
         },
 
         /**
@@ -312,10 +325,10 @@
                     });
 
                     //设置VISITING
-                    _util.setCookie('VISITING', 1, {
+                    /*_util.setCookie('VISITING', 1, {
                         type: 'day',
                         value: 180
-                    });
+                    });*/
 
                     //设置STEP
                     _util.setCookie('STEP', 1, {
@@ -327,6 +340,11 @@
                     this.setConsole();
                 } else {
                     // have UUID-老用户-180天有效
+                    //设置UUID
+                    _util.setCookie('UUID', _util.getCookie('UUID'), {
+                        type: 'day',
+                        value: 180
+                    });
 
                     //don't have SETP步长
                     if(!_util.getCookie('STEP')) {
@@ -344,7 +362,6 @@
                         });
                     } else {
                         //have SETP
-
                         _util.setCookie('STEP', +_util.getCookie('STEP') + 1, {
                             type: 'minute',
                             value: 30

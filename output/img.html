@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>img</title>
+    </head>
+    <body>
+        <iframe id="ifraa" name="ifraa" style="display:none;"></iframe>
+
+        <form action="http://upload.58cdn.com.cn/json?rand=0.1298"  target="ifraa" enctype="text/plain" method="post">
+
+
+            <input type="hidden" name="Pic-Data" value="iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5YmE5MGE4Yi0wYzQ0LTQwY2UtYWJjYS0zYTJjODA0YjJkOWIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzI0NjM2MEZEOTQ4MTFFNTlENUJENkE2MDJGOEEwRUQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzI0NjM2MEVEOTQ4MTFFNTlENUJENkE2MDJGOEEwRUQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5YmE5MGE4Yi0wYzQ0LTQwY2UtYWJjYS0zYTJjODA0YjJkOWIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OWJhOTBhOGItMGM0NC00MGNlLWFiY2EtM2EyYzgwNGIyZDliIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+lL7V6AAAAZJJREFUeNqcUz0vBEEYno+9D1GQOCHEnUSnlUsUlFSiUVxz8RM0KoXkLlFQSfwBjUahIIhWxcUvkGjuQ0GuQCKxdzsznpmdOWtZwpM82dl33+d533l3hiqliEPhRAy3O2wrl5WTeF204Vew1n5jd7m03MT6sb7MexrqDCAudyXdSDE1TZgJ6Q+UROAH9CbD1B6WB86EOXEgadWIQ+yA/WA3apDxVNGXdA3LMjRhB/njIIfgOZyLvUxGaH2Jmw4Kp8JFVayTBXTxzGSXrKeFKirUcoR4xIm0kTNTPgKgzsestk0tbHKGxJA/Eg+RVzMHZ+KCQ1ROuRnMk5+hEuJzxqAZ8CxIokxCYyX8ZnP6jMGYJ67JH+AKYLRX+ulhZ5fjvpiN7rlR4kltE+SGP4qHBqwp+D75B6DbNQYTnri9z/Cqq95aTa7uoPOha5kt6D2hrQqCvfZ+E+t86dszp0omaExsTgo8AzsR3YU+yXYGFWv0+TLRQ/vTS+aR1WcHHARfwNFw8F/yPgy+wQD4FL+RcbwLMAAYfbBe9Y6eagAAAABJRU5ErkJggg=="></input>
+            <input type="hidden"  name="Pic-Size" value="0 * 0" />
+            <input type="hidden"  name="Pic-Encoding" value="base64" />
+            <input type="hidden"  name="Pic-Path" value="/p1/" />
+              <input type="submit"  value="上传" />
+
+            <a class="btn">ajax</a>
+        </form>
+    </body>
+    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        $('.btn').click(function () {
+            $.ajax({
+                 type: "POST",
+                 url: "http://upload.58cdn.com.cn/json?rand=0.1298",
+                 data: JSON.stringify({
+                     "Pic-Data":"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5YmE5MGE4Yi0wYzQ0LTQwY2UtYWJjYS0zYTJjODA0YjJkOWIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzI0NjM2MEZEOTQ4MTFFNTlENUJENkE2MDJGOEEwRUQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzI0NjM2MEVEOTQ4MTFFNTlENUJENkE2MDJGOEEwRUQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5YmE5MGE4Yi0wYzQ0LTQwY2UtYWJjYS0zYTJjODA0YjJkOWIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OWJhOTBhOGItMGM0NC00MGNlLWFiY2EtM2EyYzgwNGIyZDliIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+lL7V6AAAAZJJREFUeNqcUz0vBEEYno+9D1GQOCHEnUSnlUsUlFSiUVxz8RM0KoXkLlFQSfwBjUahIIhWxcUvkGjuQ0GuQCKxdzsznpmdOWtZwpM82dl33+d533l3hiqliEPhRAy3O2wrl5WTeF204Vew1n5jd7m03MT6sb7MexrqDCAudyXdSDE1TZgJ6Q+UROAH9CbD1B6WB86EOXEgadWIQ+yA/WA3apDxVNGXdA3LMjRhB/njIIfgOZyLvUxGaH2Jmw4Kp8JFVayTBXTxzGSXrKeFKirUcoR4xIm0kTNTPgKgzsestk0tbHKGxJA/Eg+RVzMHZ+KCQ1ROuRnMk5+hEuJzxqAZ8CxIokxCYyX8ZnP6jMGYJ67JH+AKYLRX+ulhZ5fjvpiN7rlR4kltE+SGP4qHBqwp+D75B6DbNQYTnri9z/Cqq95aTa7uoPOha5kt6D2hrQqCvfZ+E+t86dszp0omaExsTgo8AzsR3YU+yXYGFWv0+TLRQ/vTS+aR1WcHHARfwNFw8F/yPgy+wQD4FL+RcbwLMAAYfbBe9Y6eagAAAABJRU5ErkJggg==",
+                	 "Pic-Size":"0 * 0",
+                	 "Pic-Encoding":"base64",
+                	 "Pic-Path":"/p1/"
+                 }),
+                 dataType: "text",
+                 contentType: "text/plain",
+                 success: function(data){
+                     console.log(111);
+                 }
+            });
+
+        });
+    </script>
+</html>
