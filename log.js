@@ -9,7 +9,7 @@
 
     //Document对象数据
     if(document) {
-        params.domain = document.domain || '';
+        params.d = document.domain || '';
         params.url = document.URL || '';
         //params.title = document.title || '';
         //params.ua = navigator.userAgent || '';
@@ -187,6 +187,28 @@
             window.__session =  _util.getCookie('UUID').split('.').join('|');
         },
 
+        getNowFormatDate: function(d) {
+            var date = d || new Date(),
+                seperator1 = "-",
+                seperator2 = ":",
+                month = date.getMonth() + 1,
+                strDate = date.getDate(),
+                getSec = date.getSeconds(),
+                add0 = function (n) {
+                    return (n < 10? '0'+ n: n );
+                };
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                    + " " + add0(date.getHours()) + seperator2 + add0(date.getMinutes())
+                    + seperator2 + add0(getSec);
+            return currentdate;
+        },
+
         /**
          * [logInputFn input埋点触发方法]
          * @return {[type]} [description]
@@ -250,9 +272,22 @@
                 delete params.sh;
                 delete params.sw;
                 delete params.domain;
-                delete params.rd;
+                //delete params.rd;
 
                 _util.isLoad = 0;
+            }
+
+
+            //设置VD
+            if (+_util.getCookie('STEP') == 1 || !_util.getCookie('VD')) {
+                var vd = params.rd.replace('http://','').replace('https://','') || '';
+                _util.setCookie('VD', vd, {
+                    type: 'day',
+                    value: 180
+                });
+                params.vd = vd;
+            } else {
+                params.vd = _util.getCookie('VD') || '';
             }
 
             for(var i in params) {
@@ -263,7 +298,6 @@
             }
 
             _util.isLoad = 1;
-
 
             //Image send
             var img = new Image(1, 1);
@@ -303,8 +337,8 @@
 
                 _this.put_img(param);
             } else if (type == 'unload') {
-                param.st = load_time.date;
-                param.et = new Date();
+                param.st = _util.getNowFormatDate(load_time.date);
+                param.et = _util.getNowFormatDate(new Date());
 
                 _this.put_img(param);
             } else if (type == 'click' || type == 'blur') {
@@ -374,6 +408,7 @@
                 _this.put_img({
                     'uuid': _util.getCookie('UUID').split('.')[0],
                     'sid': _util.getCookie('UUID').split('.').join('|'),
+                    'st': _util.getNowFormatDate(load_time.date),
                     'v': +_util.getCookie('UUID').split('.')[1],
                     's': _util.getCookie('STEP'),
                     'nu': _util.isNew
