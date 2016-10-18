@@ -437,13 +437,4 @@
         //bind logInput fn
         _util.logInputFn();
     });
-
-    /**
-     * page unLoad后send日志
-     */
-
-    window.onbeforeunload = function () {
-        _util.sendLog('unload');
-        return;
-    }
 })();
