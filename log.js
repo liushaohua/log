@@ -9,7 +9,7 @@
 
     //Document对象数据
     if(document) {
-        params.d = document.domain || '';
+        params.d = window.location.host || '';
         params.url = document.URL || '';
         //params.title = document.title || '';
         //params.ua = navigator.userAgent || '';
@@ -17,6 +17,7 @@
             ref_arr = [],
             rd = ref_arr.concat(ref[0],ref[1],ref[2]).join('/');
         params.rd = (rd == '//' ? '': rd);
+        params.rd = params.rd.replace('http://','').replace('https://','');
     }
     //Window对象数据
     if(window && window.screen) {
@@ -154,6 +155,10 @@
                  cookieText += "; secure";
              }
 
+             if (name) {
+                 cookieText +=  "; domain=." + window.location.hostname + "; path=/";
+             }
+
              document.cookie = cookieText;
 
              return this;
@@ -279,7 +284,7 @@
 
 
             //设置VD
-            if (+_util.getCookie('STEP') == 1 || !_util.getCookie('VD')) {
+            if (+_util.getCookie('STEP') == 1) {
                 var vd = params.rd.replace('http://','').replace('https://','') || '';
                 _util.setCookie('VD', vd, {
                     type: 'day',
@@ -302,7 +307,7 @@
             //Image send
             var img = new Image(1, 1);
 
-            img.src = 'http://10.48.192.59/1.gif?' + args;
+            img.src = 'http://testlog.58corp.com/1.gif?' + args;
         },
 
         /**
@@ -334,6 +339,7 @@
                 var difference = load_time.end - load_time.start;
 
                 param.lt = difference;
+                param.st = _util.getNowFormatDate(load_time.date);
 
                 _this.put_img(param);
             } else if (type == 'unload') {
