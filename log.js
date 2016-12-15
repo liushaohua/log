@@ -320,6 +320,12 @@
             var _this = this;
 
             param = param || {};
+
+            //is ip
+            if (/([0-9]{1,3}\.{1}){3}[0-9]{1,3}/.test(document.domain)) {
+                return false;
+            }
+
             //have uuid && set param
             if (_util.getCookie('UUID')) {
                 param.uuid =  _util.getCookie('UUID').split('.')[0];
