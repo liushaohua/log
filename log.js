@@ -159,7 +159,7 @@
                  cookieText +=  "; domain=." + window.location.hostname + "; path=/";
              }
 
-             document.cookie = cookieText;
+             document.cookie = cookieText.replace(/%20/g,'');
 
              return this;
         },
