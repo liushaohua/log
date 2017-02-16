@@ -15,12 +15,63 @@
         <a href="test2.html" dc="{tag:'uw',fm:'href'}">test3</a>
         <input dc="{tag:'input1',fm:'blur'}"/>
         <input dc="{tag:'input2',fm:'blur'}"/>
+        <div class="test1"></div>
+        <div class="test1"></div>
+        <div class="test1"></div>
+        <div class="test1"></div>
+        <div class="test1">
+            <div id="test2">
+                <div class="test3"></div>
+                <div class="test3"></div>
+                <div class="test3">
+                    <div class="test4"></div>
+                    <div class="test4"></div>
+                    <div class="test4">
+                        <div class="test5">
+                            <a id="btn-zz">3</a>
+                        </div>
+                    </div>
+                    <div class="test4"></div>
+                </div>
+                <div class="test3"></div>
+                <div class="test3"></div>
+            </div>
+        </div>
     </body>
+    <script src="/click-log.js"></script>
     <script>
         document.getElementById('clickDom').onclick = function (ev) {
             alert(3);
             window.__MisLog(this);
             ev.stopPropagation();
+        }
+
+        console.log(domTree(document.getElementById('btn-zz')));
+
+
+        //废弃
+        function index(e) {
+            var nodeName = e.nodeName.toLowerCase(),
+                toNodeName = function (e) {
+                    return e.nodeName.toLowerCase();
+                },
+                HtmlFormat = {
+                    'div': 'd',
+                    'span': 's',
+                    'lable': 'l'
+                },
+                eleTree = [nodeName];
+
+            while (toNodeName(e.parentNode) != 'body') {
+                e = e.parentNode;
+                var eClass = e.getAttribute('class'),
+                    formatE = HtmlFormat(toNodeName(e)),
+                    eString = (formatE? formatE: toNodeName(e)) + (eClass? '.'+ eClass: '');
+
+                eleTree.push(eString);
+            }
+
+            return eleTree.join(' ');
         }
     </script>
 </html>
